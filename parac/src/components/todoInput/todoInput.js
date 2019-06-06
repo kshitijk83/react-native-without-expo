@@ -6,32 +6,35 @@ import { setTodo, addTodo } from '../../store/actions/todoActions'
 class TodoInput extends Component {
     constructor(props) {
         super(props);
-
+        this.state={
+            input: ''
+        }
     }
 
     onChangeHandler = (input) => {
-        this.props.set(input);
+        this.setState({input: input})
     }
 
-    addHandler = (t) => {
-        this.props.add(t);
+    addHandler = () => {
+        this.props.add(this.state.input);
     }
 
     render() {
+        console.log(this.state.input);
         return (
             <View style={styles.inputContainer}>
                 <View style={styles.inputCon}>
                     <TextInput
                         multiline={true}
                         placeholder='Enter Todo'
-                        value={this.props.todoState.input}
+                        value={this.state.input}
                         onChangeText={(text) => this.onChangeHandler(text)}
                     />
                 </View>
                 <Button
                     style={styles.button}
                     title="Add"
-                    onPress={(todo) => this.addHandler(todo)}
+                    onPress={() => this.addHandler()}
                 />
 
             </View>
@@ -39,16 +42,16 @@ class TodoInput extends Component {
     }
 }
 
-const mapStatetoProps = state => {
-    return {
-        todoState: state.todo
-    }
-}
+// const mapStatetoProps = state => {
+//     return {
+//         todoState: state.todo
+//     }
+// }
 
 const dispatchStatetoProps = dispatch => {
     return {
         set: () => dispatch(setTodo()),
-        add: () => dispatch(addTodo())
+        add: (i) => dispatch(addTodo(i))
     }
 }
 
@@ -73,4 +76,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default connect(mapStatetoProps, dispatchStatetoProps)(TodoInput);
+export default connect(null, dispatchStatetoProps)(TodoInput);
