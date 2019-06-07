@@ -1,18 +1,18 @@
 import React, { Component } from 'react'
 import { View, Button, StyleSheet, Text, TextInput } from 'react-native'
 import { connect } from 'react-redux'
-import { setTodo, addTodo } from '../../store/actions/todoActions'
+import { setTodo, addTodo } from '../../../store/actions/todoActions'
 
 class TodoInput extends Component {
     constructor(props) {
         super(props);
-        this.state={
+        this.state = {
             input: ''
         }
     }
 
     onChangeHandler = (input) => {
-        this.setState({input: input})
+        this.setState({ input: input })
     }
 
     addHandler = () => {

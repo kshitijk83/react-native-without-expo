@@ -7,8 +7,8 @@ export const addTodo = (todo) => {
     }
 }
 
-export const delTodo = (key)=>{
-    return{
+export const delTodo = (key) => {
+    return {
         type: actionTypes.DELETE_INGREDIENT,
         payload: key
     }
