@@ -1,8 +1,9 @@
 import { createAppContainer, createStackNavigator } from 'react-navigation';
 import todoApp from '../components/todoApp/todoApp';
 import Blah from '../components/blah/blah';
+import Modal from '../components/modal/modal';
 
-const rootNavigator = createStackNavigator({
+const mainStack = createStackNavigator({
     todoApp: {
         screen: todoApp
     },
@@ -11,8 +12,27 @@ const rootNavigator = createStackNavigator({
     }
 },
     {
-        initialRouteName: 'todoApp'
+        initialRouteName: 'todoApp',
+        defaultNavigationOptions:{
+            headerStyle:{
+                backgroundColor: '#000'
+            },
+            headerTintColor: '#fff',
+        }
     })
+
+const rootNavigator = createStackNavigator({
+    main:{
+        screen: mainStack
+    },
+    modal:{
+        screen: Modal
+    }
+},{
+    mode: 'modal',
+    headerMode: 'none'
+}
+)
 
 
 export default createAppContainer(rootNavigator);

@@ -8,6 +8,9 @@
 
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
+import { useScreens } from 'react-native-screens';
+
+useScreens();
 
 import AppContainer from './src/navigation/navigation';
 

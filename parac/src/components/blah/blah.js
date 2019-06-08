@@ -1,15 +1,20 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, Button } from 'react-native';
+import { centerStyle } from '../../commonStyles/styles';
 
 class Blah extends Component {
-    static navigationOptions = ({ navigation }) => {
+    static navigationOptions = ({ navigation, navigationOptions }) => {
         return {
-            title: navigation.getParam('newTitle', 'error')
+            title: navigation.getParam('newTitle', 'error'),
+                headerStyle:{
+                    backgroundColor: navigationOptions.headerTintColor
+                },
+                headerTintColor:navigationOptions.headerStyle.backgroundColor
         }
     }
     render() {
         return (
-            <View style={styles.blah}>
+            <View style={centerStyle.center}>
                 <Text>Blah</Text>
                 <Button
                     title="go back"
@@ -17,20 +22,11 @@ class Blah extends Component {
                 />
                 <Button
                     title="change header title"
-                    onPress={() => this.navigation.setParam('newTitle', 'again new title')}
+                    onPress={() => this.props.navigation.setParams({newTitle: 'again new title'})}
                 />
             </View>
         );
     }
 }
-
-const styles = StyleSheet.create({
-    blah: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-});
 
 export default Blah;

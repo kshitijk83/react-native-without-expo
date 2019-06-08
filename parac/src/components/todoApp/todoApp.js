@@ -1,9 +1,21 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
 import TodoInput from './todoInput/todoInput';
-import TodoList from '../todoList/todoList';
+import TodoList from './todoList/todoList';
 
 class TodoApp extends Component {
+
+    static navigationOptions=({navigation})=>{
+        return{
+            headerLeft:(
+                <Button
+                title='modal'
+                onPress={()=>navigation.navigate('modal')}
+                />
+            )
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -15,7 +27,7 @@ class TodoApp extends Component {
                 >Touch to delete</Text>
                 <Button
                     title="go to blah"
-                    onPress={() => this.props.navigation.navigate('blah', { newTitle })}
+                    onPress={() => this.props.navigation.navigate('blah', { newTitle: 'new Title' })}
                 />
                 <TodoList />
             </View>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
-import { delTodo } from '../../store/actions/todoActions';
+import { delTodo } from '../../../store/actions/todoActions';
 
 class TodoList extends Component {
 
