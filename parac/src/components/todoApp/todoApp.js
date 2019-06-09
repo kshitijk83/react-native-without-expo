@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, Button } from 'react-native';
+import { View, Text, StyleSheet, Button, BackHandler, Alert } from 'react-native';
 import TodoInput from './todoInput/todoInput';
 import TodoList from './todoList/todoList';
 
 class TodoApp extends Component {
-
+    back = null;
     // static navigationOptions=({navigation})=>{
     //     return{
     //         headerLeft:(
@@ -15,6 +15,28 @@ class TodoApp extends Component {
     //         )
     //     }
     // }
+
+    componentDidMount(){
+        // this.back = BackHandler.addEventListener('hardwareBackPress', function(){
+        //     if(!this.onMainScreen){
+        //         Alert.alert(
+        //             'alert',
+        //             'back button pressed',
+        //             [
+        //                 {
+        //                     text: 'OK'
+        //                 }
+        //             ]
+        //         )
+        //         return true;
+        //     }
+            // BackHandler.exitApp();
+        // })
+    }
+
+    componentWillUnmount(){
+        back.removeEventListener();
+    }
 
     render() {
         return (
