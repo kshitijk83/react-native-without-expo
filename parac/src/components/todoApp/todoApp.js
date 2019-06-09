@@ -5,16 +5,16 @@ import TodoList from './todoList/todoList';
 
 class TodoApp extends Component {
 
-    static navigationOptions=({navigation})=>{
-        return{
-            headerLeft:(
-                <Button
-                title='modal'
-                onPress={()=>navigation.navigate('modal')}
-                />
-            )
-        }
-    }
+    // static navigationOptions=({navigation})=>{
+    //     return{
+    //         headerLeft:(
+    //             <Button
+    //             title='modal'
+    //             onPress={()=>navigation.navigate('modal')}
+    //             />
+    //         )
+    //     }
+    // }
 
     render() {
         return (

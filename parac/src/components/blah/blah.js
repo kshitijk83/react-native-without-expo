@@ -3,15 +3,15 @@ import { View, Text, Button } from 'react-native';
 import { centerStyle } from '../../commonStyles/styles';
 
 class Blah extends Component {
-    static navigationOptions = ({ navigation, navigationOptions }) => {
-        return {
-            title: navigation.getParam('newTitle', 'error'),
-                headerStyle:{
-                    backgroundColor: navigationOptions.headerTintColor
-                },
-                headerTintColor:navigationOptions.headerStyle.backgroundColor
-        }
-    }
+    // static navigationOptions = ({ navigation, navigationOptions }) => {
+    //     return {
+    //         title: navigation.getParam('newTitle', 'error'),
+    //             headerStyle:{
+    //                 backgroundColor: navigationOptions.headerTintColor
+    //             },
+    //             headerTintColor:navigationOptions.headerStyle.backgroundColor
+    //     }
+    // }
     render() {
         return (
             <View style={centerStyle.center}>
