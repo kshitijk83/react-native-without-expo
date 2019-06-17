@@ -25,7 +25,11 @@ class Blah extends Component {
                 null, {dx: this.animValue.x, dy: this.animValue.y}
             ]),
             onPanResponderRelease:(event, gestureState)=>{
-
+                this.animValue.flattenOffset();
+                Animated.decay(this.animValue,{
+                    deceleration: 0.997,
+                    velocity: {x: gestureState.vx, y: gestureState.vy}
+                }).start();
             }
         })
     }
