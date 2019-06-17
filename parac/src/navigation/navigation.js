@@ -1,5 +1,5 @@
 import React from 'react';
-import { createAppContainer, createBottomTabNavigator } from 'react-navigation';
+import { createAppContainer, createBottomTabNavigator, createDrawerNavigator } from 'react-navigation';
 import todoApp from '../components/todoApp/todoApp';
 import Blah from '../components/blah/blah';
 // import Modal from '../components/modal/modal';
@@ -18,6 +18,15 @@ const getTabBarIcon = (navigation, focused, tintColor)=>{
         }
         return <IconComponent name={iconName} size={25} color={tintColor} />
     }
+
+const drawerNav = createDrawerNavigator({
+    screen2:{
+        screen: Blah
+    },
+    scree1 :{
+        screen: todoApp
+    },
+})
 
 const rootNavigator = createBottomTabNavigator({
     todoApp: {
@@ -38,7 +47,7 @@ const rootNavigator = createBottomTabNavigator({
 }
 )
 
-export default createAppContainer(rootNavigator);
+export default createAppContainer(drawerNav);
 
 
 
