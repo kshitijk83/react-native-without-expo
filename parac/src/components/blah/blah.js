@@ -5,10 +5,10 @@ import { centerStyle } from '../../commonStyles/styles';
 class Blah extends Component {
     constructor(props){
         super(props);
+        this.animValue=new Animated.ValueXY();
     }
 
     componentWillMount(){
-        this.animValue = new Animated.ValueXY();
         this._value={x:0,y:0};
         this.animValue.addListener((value)=>this._value=value);
         this.pan = PanResponder.create({
@@ -35,12 +35,18 @@ class Blah extends Component {
     }
 
     render(){
+        let opacity = this.animValue.y.interpolate({
+            inputRange: [-500, 0, 500],
+            outputRange: [0,1,0],
+            // extrapolate: 'clamp'
+
+        });
         let animStyles = {
             transform:this.animValue.getTranslateTransform()
         }
         return(
             <View style={{flex:1, justifyContent:'center',alignItems:'center'}}>
-                <Animated.View style={[styles.card, animStyles]} {...this.pan.panHandlers}>
+                <Animated.View style={[styles.card, animStyles, {opacity: opacity}]} {...this.pan.panHandlers}>
 
                 </Animated.View>
             </View>
