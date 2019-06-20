@@ -6,11 +6,13 @@ class Blah extends Component {
         super(props);
         this.animCircleTop = new Animated.ValueXY();
         this.animCircleBottom = new Animated.ValueXY();
+        this.animCard = new Animated.ValueXY();
         this.winHeight = Dimensions.get('window').height;
         this.direction;
         this.state = {
             animCircleTop: this.animCircleTop,
-            animCircleBottom: this.animCircleBottom
+            animCircleBottom: this.animCircleBottom,
+            animCard: this.animCard
         }
     }
 
@@ -32,6 +34,11 @@ class Blah extends Component {
                     y: 0
                 });
                 this.state.animCircleBottom.setValue({ x: 0, y: 0 });
+                this.state.animCard.setOffset({
+                    x: 0,
+                    y: 0
+                });
+                this.state.animCard.setValue({ x: 0, y: 0 });
             },
             onPanResponderMove: (evt, gestureState) => {
                 if (gestureState.dy < 0) {
