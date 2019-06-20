@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { View, Easing, Text, Image, Dimensions, Animated, PanResponder, StyleSheet } from 'react-native';
-import { centerStyle } from '../../commonStyles/styles';
-import Cross from '../../assets/cancel.png';
 
 class Blah extends Component {
     constructor(props) {
