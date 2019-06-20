@@ -46,20 +46,55 @@ class Blah extends Component {
                 } else {
                     this.state.animCircleBottom.setValue({ x: 0, y: gestureState.dy });
                 }
+                this.state.animCard.setValue({x: 0, y: gestureState.dy});
             },
             onPanResponderRelease: (event, gestureState) => {
-                Animated.timing(this.state.animCircleTop.y, {
-                    toValue: 0,
-                    duration: 200,
-                    easing: Easing.inOut(Easing.ease),
-                    useNativeDriver: true
-                }).start();
-                Animated.timing(this.state.animCircleBottom.y, {
-                    toValue: 0,
-                    duration: 200,
-                    easing: Easing.out(Easing.ease),
-                    useNativeDriver: true
-                }).start();
+                // this.animCircleTop.flattenOffset();
+                // this.animCircleBottom.flattenOffset();
+                // this.animCard.flattenOffset();
+                // this.animCard.setOffset({x:0,y:gestureState.dy})
+                // this.animCard.setOffset({
+                //     x: 0,y:0
+                // })
+                // Animated.parallel([
+                    if(gestureState.dy>0){
+                        Animated.timing(this.state.animCircleBottom.y, {
+                            toValue: 0,
+                            duration: 200,
+                            easing: Easing.out(Easing.ease),
+                            useNativeDriver: true
+                        }).start();
+                    } else{
+                        Animated.timing(this.state.animCircleTop.y, {
+                            toValue: 0,
+                            duration: 200,
+                            easing: Easing.inOut(Easing.ease),
+                            useNativeDriver: true
+                        }).start()
+                    }
+                    if(gestureState.dy>=-200&&gestureState.dy<=200){
+                        Animated.spring(this.state.animCard,{
+                            toValue: {x:0,y:0},
+                            friction:4,
+                            useNativeDriver: true
+                        }).start()
+                    } else{
+                            Animated.parallel([
+                                Animated.timing(this.state.animCard,{
+                                    toValue: gestureState.dy>0?800:-800,
+                                    duration: 100,
+                                    easing: Easing.in(Easing.ease),
+                                    useNativeDriver: true
+                                }),
+                                // Animated.decay(this.animCard,{
+                                //     deceleration: 0.997,
+                                //     velocity: {x: gestureState.vx, y: gestureState.vy},
+                                //     useNativeDriver: true
+                                // })
+                            ]).start(()=>{
+                                console.log('balh');
+                            })
+                    }
             }
         })
     }
@@ -110,10 +145,18 @@ class Blah extends Component {
     render() {
 
         let { circleTopy, circleScaleTop, rotateTopCircle } = this.topCircleAnimation(this.state.animCircleTop);
-        let { circleBottom, circleScaleBottom, rotateBottomCircle } = this.bottomCircleAnimation(this.state.animCircleBottom)
+        let { circleBottom, circleScaleBottom, rotateBottomCircle } = this.bottomCircleAnimation(this.state.animCircleBottom);
+
+
+        let cardY  = this.animCard.y;
+        // .interpolate({
+        //     inputRange: [-this.winHeight, 0, this.winHeight],
+        //     outputRange: [-50, 0, 50]
+        // })
+
         return (
             <View style={styles.center}>
-                <View style={[styles.card]} {...this.pan.panHandlers} />
+                <Animated.View style={[styles.card, { transform:[{translateY: cardY}]}]} {...this.pan.panHandlers} />
                 <Animated.Image style={[
                     styles.circleStyles,
                     styles.topCircle,
