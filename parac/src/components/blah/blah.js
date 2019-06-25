@@ -16,38 +16,69 @@ class Blah extends Component {
         }
     }
 
+    lastTap = null;
+    handleDoubleTap = () => {
+        const now = Date.now();
+        const DOUBLE_PRESS_DELAY = 300;
+        var diff = now - this.lastTap;
+        if (this.lastTap && diff < DOUBLE_PRESS_DELAY) {
+        console.log('lkdsj')
+        alert('akdf');
+        this.lastTap=null;
+        return true;
+    } else {
+        this.lastTap = now;
+        }
+    }
+
     componentWillMount() {
         this._value = { x: 0, y: 0 };
         this.state.animCircleTop.addListener((value) => this._value = value);
         this.state.animCircleBottom.addListener((value) => this._value = value);
         this.pan = PanResponder.create({
-            onStartShouldSetPanResponder: (evt) => true,
+            onStartShouldSetPanResponder: (evt) => {
+                console.log(evt.changedTouches);
+                // this.handleDoubleTap();
+                return true
+            },
             onMoveShouldSetPanResponder: (evt) => true,
             onPanResponderTerminationRequest: (evt) => false,
             onPanResponderGrant: (evt, gS) => {
-                this.state.animCircleTop.setOffset({
-                    x: 0,
-                    y: 0
-                });
-                this.state.animCircleTop.setValue({ x: 0, y: 0 });
-                this.state.animCircleBottom.setOffset({
-                    x: 0,
-                    y: 0
-                });
-                this.state.animCircleBottom.setValue({ x: 0, y: 0 });
-                this.state.animCard.setOffset({
-                    x: 0,
-                    y: 0
-                });
-                this.state.animCard.setValue({ x: 0, y: 0 });
+                if(gS.dy<=1&&gS.dy>=-1){
+                    this.handleDoubleTap();
+                } else{
+                    this.state.animCircleTop.setOffset({
+                        x: 0,
+                        y: 0
+                    });
+                    this.state.animCircleTop.setValue({ x: 0, y: 0 });
+                    this.state.animCircleBottom.setOffset({
+                        x: 0,
+                        y: 0
+                    });
+                    this.state.animCircleBottom.setValue({ x: 0, y: 0 });
+                    this.state.animCard.setOffset({
+                        x: 0,
+                        y: 0
+                    });
+                    this.state.animCard.setValue({ x: 0, y: 0 });
+                }
             },
             onPanResponderMove: (evt, gestureState) => {
-                if (gestureState.dy < 0) {
-                    this.state.animCircleTop.setValue({ x: 0, y: gestureState.dy });
-                } else {
-                    this.state.animCircleBottom.setValue({ x: 0, y: gestureState.dy });
+                if(gestureState.dy<=1&&gestureState.dy>=-1){
+                    this.handleDoubleTap();
+                } else{
+                    if (gestureState.dy < 0) {
+                        this.state.animCircleTop.setValue({ x: 0, y: gestureState.dy });
+                    } else {
+                        this.state.animCircleBottom.setValue({ x: 0, y: gestureState.dy });
+                    }
+                    this.state.animCard.setValue({x: 0, y: gestureState.dy});
                 }
+<<<<<<< HEAD
                 this.state.animCard.setValue({ x: 0, y: gestureState.dy });
+=======
+>>>>>>> f4aa10d1bf7c9045b3255f1935549a7c094d4c2c
             },
             onPanResponderRelease: (event, gestureState) => {
                 // this.animCircleTop.flattenOffset();
