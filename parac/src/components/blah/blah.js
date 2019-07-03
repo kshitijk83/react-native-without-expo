@@ -8,6 +8,8 @@ class Blah extends Component {
         this.animCircleBottom = new Animated.ValueXY();
         this.animCard = new Animated.ValueXY();
         this.winHeight = Dimensions.get('window').height;
+        this.winWidth = Dimensions.get('window').width;
+        this.circleHeight=0;
         this.direction;
         this.state = {
             animCircleTop: this.animCircleTop,
@@ -23,7 +25,7 @@ class Blah extends Component {
         var diff = now - this.lastTap;
         if (this.lastTap && diff < DOUBLE_PRESS_DELAY) {
         console.log('lkdsj')
-        alert('akdf');
+        // alert('akdf');
         this.lastTap=null;
         return true;
     } else {
@@ -43,19 +45,19 @@ class Blah extends Component {
             },
             onMoveShouldSetPanResponder: (evt) => true,
             onPanResponderGrant: (evt, gS) => {
-                if(gS.dy<=1&&gS.dy>=-1){
+                if(gS.dx<=1&&gS.dx>=-1){
                     this.handleDoubleTap();
                 } else{
-                    this.state.animCircleTop.setOffset({
-                        x: 0,
-                        y: 0
-                    });
-                    this.state.animCircleTop.setValue({ x: 0, y: 0 });
-                    this.state.animCircleBottom.setOffset({
-                        x: 0,
-                        y: 0
-                    });
-                    this.state.animCircleBottom.setValue({ x: 0, y: 0 });
+                    // this.state.animCircleTop.setOffset({
+                    //     x: 0,
+                    //     y: 0
+                    // });
+                    this.state.animCircleTop.setValue({ x: this.winWidth/2, y: 0 });
+                    // this.state.animCircleBottom.setOffset({
+                    //     x: 0,
+                    //     y: 0
+                    // });
+                    this.state.animCircleBottom.setValue({ x:-this.winWidth/2, y: 0 });
                     this.state.animCard.setOffset({
                         x: 0,
                         y: 0
@@ -64,15 +66,15 @@ class Blah extends Component {
                 }
             },
             onPanResponderMove: (evt, gestureState) => {
-                if(gestureState.dy<=1&&gestureState.dy>=-1){
+                if(gestureState.dx<=1&&gestureState.dx>=-1){
                     this.handleDoubleTap();
                 } else{
-                    if (gestureState.dy < 0) {
-                        this.state.animCircleTop.setValue({ x: 0, y: gestureState.dy });
+                    if (gestureState.dx > 0) {
+                        this.state.animCircleTop.setValue({ x: gestureState.dx, y: 0 });
                     } else {
-                        this.state.animCircleBottom.setValue({ x: 0, y: gestureState.dy });
+                        this.state.animCircleBottom.setValue({ x: gestureState.dx, y: 0 });
                     }
-                    this.state.animCard.setValue({x: 0, y: gestureState.dy});
+                    this.state.animCard.setValue({x: gestureState.dx, y: 0});
                 }
             },
             onPanResponderRelease: (event, gestureState) => {
@@ -84,22 +86,22 @@ class Blah extends Component {
                 //     x: 0,y:0
                 // })
                 // Animated.parallel([
-                    if(gestureState.dy>0){
-                        Animated.timing(this.state.animCircleBottom.y, {
+                    if(gestureState.dx<0){
+                        Animated.timing(this.state.animCircleBottom.x, {
                             toValue: 0,
                             duration: 200,
                             easing: Easing.out(Easing.ease),
                             useNativeDriver: true
                         }).start();
                     } else{
-                        Animated.timing(this.state.animCircleTop.y, {
+                        Animated.timing(this.state.animCircleTop.x, {
                             toValue: 0,
                             duration: 200,
                             easing: Easing.inOut(Easing.ease),
                             useNativeDriver: true
                         }).start()
                     }
-                    if(gestureState.dy>=-200&&gestureState.dy<=200){
+                    if(gestureState.dx>=-70&&gestureState.dx<=70){
                         Animated.spring(this.state.animCard,{
                             toValue: {x:0,y:0},
                             friction:4,
@@ -108,7 +110,7 @@ class Blah extends Component {
                     } else{
                             Animated.parallel([
                                 Animated.timing(this.state.animCard,{
-                                    toValue: gestureState.dy>0?800:-800,
+                                    toValue: gestureState.dx>0?400:-400,
                                     duration: 100,
                                     easing: Easing.in(Easing.ease),
                                     useNativeDriver: true
@@ -127,43 +129,55 @@ class Blah extends Component {
     }
 
     topCircleAnimation = (animationObj) => {
-        let circleTopy;
-        circleTopy = animationObj.y
+        let circleTopx;
+        circleTopx = animationObj.x
             .interpolate({
-                inputRange: [-this.winHeight, -this.winHeight / 3, 0],
-                outputRange: [this.winHeight / 2.4, this.winHeight / 2.4, 0]
+                inputRange: [0, this.winWidth / 3, this.winWidth],
+                outputRange: [-this.winWidth / 2.4, -this.winWidth / 2.4, 0],
+                // inputRange: [-this.winWidth, -this.winWidth / 3, 0],
+                // outputRange: [this.winWidth / 2.4, this.winWidth / 2.4, 0]
             });
         let circleScaleTop;
-        circleScaleTop = animationObj.y.interpolate({
-            inputRange: [-this.winHeight / 2, -this.winHeight / 3, 0],
-            outputRange: [2, 1.2, 0]
+        circleScaleTop = animationObj.x.interpolate({
+            inputRange: [0, this.winWidth / 3, this.winWidth / 2],
+            outputRange: [0, 1.2, 2],
+            // inputRange: [-this.winWidth / 2, -this.winWidth / 3, 0],
+            // outputRange: [2, 1.2, 0]
         })
 
         let rotateTopCircle;
-        rotateTopCircle = animationObj.y.interpolate({
-            inputRange: [-this.winHeight, -this.winHeight / 3, 0],
-            outputRange: ['360deg', '360deg', '0deg']
+        rotateTopCircle = animationObj.x.interpolate({
+            inputRange: [0, this.winWidth / 3, this.winWidth / 2],
+            outputRange: ['0deg', '360deg', '360deg']
+            // inputRange: [-this.winWidth, -this.winWidth / 3, 0],
+            // outputRange: ['360deg', '360deg', '0deg']
         })
 
-        return { circleTopy, circleScaleTop, rotateTopCircle };
+        return { circleTopx, circleScaleTop, rotateTopCircle };
     }
 
     bottomCircleAnimation = (animationObj) => {
         let circleBottom;
-        circleBottom = animationObj.y
+        circleBottom = animationObj.x
             .interpolate({
-                inputRange: [0, this.winHeight / 3, this.winHeight],
-                outputRange: [0, -this.winHeight / 2.4, -this.winHeight / 2.4]
+                inputRange: [-this.winWidth, -this.winWidth / 3, 0],
+                outputRange: [0, this.winWidth / 2.4, this.winWidth / 2.4],
+                // inputRange: [0, this.winWidth / 3, this.winWidth],
+                // outputRange: [0, -this.winWidth / 2.4, -this.winWidth / 2.4]
             });
         let circleScaleBottom;
-        circleScaleBottom = animationObj.y.interpolate({
-            inputRange: [0, this.winHeight / 3, this.winHeight / 2],
-            outputRange: [0, 1.2, 2]
+        circleScaleBottom = animationObj.x.interpolate({
+            // inputRange: [0, this.winWidth / 3, this.winWidth / 2],
+            // outputRange: [0, 1.2, 2]
+            inputRange: [-this.winWidth / 2, -this.winWidth / 3, 0],
+            outputRange: [2, 1.2, 0]
         })
         let rotateBottomCircle;
-        rotateBottomCircle = animationObj.y.interpolate({
-            inputRange: [0, this.winHeight / 3, this.winHeight / 2],
-            outputRange: ['0deg', '360deg', '360deg']
+        rotateBottomCircle = animationObj.x.interpolate({
+            inputRange: [-this.winWidth, -this.winWidth / 3, 0],
+            outputRange: ['360deg', '360deg', '0deg']
+            // inputRange: [0, this.winWidth / 3, this.winWidth / 2],
+            // outputRange: ['0deg', '360deg', '360deg']
         })
 
         return { circleBottom, circleScaleBottom, rotateBottomCircle };
@@ -171,11 +185,11 @@ class Blah extends Component {
 
     render() {
 
-        let { circleTopy, circleScaleTop, rotateTopCircle } = this.topCircleAnimation(this.state.animCircleTop);
+        let { circleTopx, circleScaleTop, rotateTopCircle } = this.topCircleAnimation(this.state.animCircleTop);
         let { circleBottom, circleScaleBottom, rotateBottomCircle } = this.bottomCircleAnimation(this.state.animCircleBottom);
 
 
-        let cardY  = this.animCard.y;
+        let cardX  = this.animCard.x;
         // .interpolate({
         //     inputRange: [-this.winHeight, 0, this.winHeight],
         //     outputRange: [-50, 0, 50]
@@ -183,13 +197,17 @@ class Blah extends Component {
 
         return (
             <View style={styles.center}>
-                <Animated.View style={[styles.card, { transform:[{translateY: cardY}]}]} {...this.pan.panHandlers} />
-                <Animated.Image style={[
+                <Animated.View style={[styles.card, { transform:[{translateX: cardX}]}]} {...this.pan.panHandlers} />
+                <Animated.Image onLayout={(e)=>{
+                    const {width, height}=e.nativeEvent.layout;
+                    this.circleHeight = height;
+                }} style={[
                     styles.circleStyles,
                     styles.topCircle,
                     {
+                        top: this.winHeight/2-50,
                         transform: [{
-                            translateY: circleTopy,
+                            translateX: circleTopx,
                         }, {
                             rotate: rotateTopCircle
                         }, {
@@ -204,8 +222,9 @@ class Blah extends Component {
                         styles.circleStyles,
                         styles.bottomCircle,
                         {
+                            bottom: this.winHeight/2-50,
                             transform: [{
-                                translateY: circleBottom,
+                                translateX: circleBottom,
                             }, {
                                 rotate: rotateBottomCircle
                             }, {
@@ -241,7 +260,10 @@ const styles = StyleSheet.create({
         zIndex: 10
     },
     topCircle: {
-        top: 0
+        top: 0,
+        // bottom: 0,
+        // left:0,
+        // right:0
     },
     bottomCircle: {
         bottom: 0
